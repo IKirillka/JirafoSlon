@@ -402,6 +402,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self._worker.log_line.connect(self._append_log)
         self._worker.start()
         self._append_log(f"Camera index: {cam_index}")
+        self._append_log("Стрим камеры запущен")
         self._log_db("INFO", "camera_start", f"index={cam_index}")
         self._append_log(f"Weights: {weights}")
 
@@ -635,7 +636,7 @@ class MainWindow(QtWidgets.QMainWindow):
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         h, w, ch = rgb.shape
         bytes_per_line = ch * w
-        qimg = QtGui.QImage(rgb.data, w, h, bytes_per_line, QtGui.QImage.Format_RGB888)
+        qimg = QtGui.QImage(rgb.data, w, h, bytes_per_line, QtGui.QImage.Format_RGB888).copy()
         pix = QtGui.QPixmap.fromImage(qimg)
         self.preview.setPixmap(
             pix.scaled(self.preview.size(), QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
@@ -737,14 +738,18 @@ class MainWindow(QtWidgets.QMainWindow):
         if not self._admin_unlocked:
             return
         self._persist_settings()
-        self._start_camera()
+        if self._worker and self._worker.isRunning():
+            self._worker.update_runtime_settings(conf=float(self.conf_edit.value()))
+        self._append_log(f"conf обновлен: {self.conf_edit.value():.2f}")
 
     def _on_fps_changed(self):
         """Перезапускаем поток при смене ограничения FPS."""
         if not self._admin_unlocked:
             return
         self._persist_settings()
-        self._start_camera()
+        if self._worker and self._worker.isRunning():
+            self._worker.update_runtime_settings(fps=int(self.fps_edit.value()))
+        self._append_log(f"FPS обновлен: {int(self.fps_edit.value())}")
 
     def _on_resolution_changed(self):
         """Синхронизируем пресет и перезапускаем поток при смене размеров."""
