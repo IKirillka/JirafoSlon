@@ -1,24 +1,22 @@
-﻿# Jiraf - Computer Vision Detection System
+# Jiraf - Computer Vision Detection System
 
-Jiraf - приложение для детектирования объектов на видеопотоке с помощью YOLOv8. Интерфейс на PySide6, хранение событий в PostgreSQL, сохранение снимков и фоновая обработка кадра.
+Jiraf - приложение для детектирования объектов на видеопотоке с помощью YOLOv8. GUI на PySide6, хранение событий в PostgreSQL, сохранение снимков и фоновая обработка кадра.
 
-## Возможности
+[![Запуск](https://img.shields.io/badge/Запуск-launcher.py-1f6feb?style=for-the-badge)](./Jiraf/App/launcher.py)
+[![Конфиг](https://img.shields.io/badge/Конфиг-config.json-2ea043?style=for-the-badge)](./Jiraf/App/config.json)
+[![Зависимости](https://img.shields.io/badge/Requirements-requirements.txt-6f42c1?style=for-the-badge)](./Jiraf/App/requirements.txt)
+[![Код](https://img.shields.io/badge/Код-Jiraf%2FApp-24292f?style=for-the-badge)](./Jiraf/App/)
 
-- детектирование объектов Box, Sensor, Documentation
-- просмотр видеопотока в реальном времени
-- управление камерой, весами и параметрами из GUI
-- сохранение снимков в папку и в базу
-- админ-доступ по паролю
-- фоновые worker-потоки для обработки видео
+## Что умеет
 
-## Требования
+- детектировать Box, Sensor и Documentation
+- показывать поток с камеры в реальном времени
+- сохранять снимки и писать их в базу
+- принимать настройки камеры, весов и FPS из GUI
+- защищать админские действия паролем
+- запускать обработку кадра в фоне
 
-- Python 3.10+
-- PostgreSQL 12+
-- вебкамера или другой источник видео
-- CUDA 12.1 опционально
-
-## Установка
+## Быстрый старт
 
 ```bash
 git clone https://github.com/IKirillka/JirafoSlon.git
@@ -26,11 +24,12 @@ cd JirafoSlon
 python -m venv venv
 venv\Scripts\activate
 pip install -r Jiraf/App/requirements.txt
+python Jiraf/App/launcher.py
 ```
 
-## Конфигурация
+## Конфиг
 
-Основной конфиг лежит в `Jiraf/App/config.json`.
+Основной файл: [Jiraf/App/config.json](./Jiraf/App/config.json)
 
 ```json
 {
@@ -52,11 +51,12 @@ pip install -r Jiraf/App/requirements.txt
 }
 ```
 
-## Запуск
+## Требования
 
-```bash
-python Jiraf/App/launcher.py
-```
+- Python 3.10+
+- PostgreSQL 12+
+- вебкамера или другой источник видео
+- CUDA 12.1 опционально
 
 ## Структура
 
